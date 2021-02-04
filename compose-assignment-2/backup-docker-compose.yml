@@ -5,28 +5,21 @@ services:
 
     image: postgres:12.1
 
-    deploy:
-      replicas: 2
-
     environment: 
-      - POSTGRES_PASSWORD_FILE=/run/secrets/psql-pw
-
-    secrets:
-      - psql-pw
+      - POSTGRES_USER=uh
+      - POSTGRES_PASSWORD=hi
 
     volumes:
       - db-data:/var/lib/postgresql/data
     
     networks: 
       - wp
-    
 
   web:
-    image: drupal:8.2
-    
-    deploy:
-      replicas: 1
+    build: .
 
+    image: custom-drupal
+    
     ports: 
      - 8080:80
 
@@ -49,7 +42,3 @@ volumes:
           
 networks: 
   wp:
-
-secrets:
-  psql-pw:
-    external: true
